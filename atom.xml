@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>HongYu Zhao</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.zhaohongyu.com/"/>
+  <updated>2016-08-09T05:33:16.000Z</updated>
+  <id>http://blog.zhaohongyu.com/</id>
+  
+  <author>
+    <name>HongYu Zhao</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在GitHub多个帐号上添加SSH公钥</title>
+    <link href="http://blog.zhaohongyu.com/2016/02/14/add-multiple-ssh-keys-on-github/"/>
+    <id>http://blog.zhaohongyu.com/2016/02/14/add-multiple-ssh-keys-on-github/</id>
+    <published>2016-02-14T01:35:06.000Z</published>
+    <updated>2016-08-09T05:33:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>GitHub后台可以添加多个SSH Keys，但是同一个SSH Keys只能在添加在一个帐号上（添加时提示“Key is already in use”）。理由很容易想到，SSH公钥使用时相当于用户名密码，不可能两个不同的帐号使用同一个用户名密码。要想在多个GitHub帐号上添加公钥，就要在本地生成多个SSH Keys，每个GitHub帐号对应一个不同的SSH Keys。步骤如下：<br><a id="more"></a></p>
+<ol>
+<li>生成一个新的SSH KEY</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t rsa -C <span class="string">'git@webmaster.me'</span></div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (~/.ssh/id_rsa): id_rsa2 <span class="comment">#这里输入一个新的ssh key文件名</span></div><div class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved <span class="keyword">in</span> ~/.ssh/id_rsa2.</div><div class="line">Your public key has been saved <span class="keyword">in</span> ~/.ssh/id_rsa2.pub.</div><div class="line">The key fingerprint is:</div><div class="line">3a:01:17:b3:f9:26:5b:53:b3:69:be:71:a8:66:f6:96 git@webmaster.me</div><div class="line">The key<span class="string">'s randomart image is:</span></div><div class="line">+--[ RSA 2048]----+</div><div class="line">| o |</div><div class="line">| = |</div><div class="line">| . + o |</div><div class="line">| . . . + |</div><div class="line">| o S + |</div><div class="line">| B + . |</div><div class="line">| + .+ + |</div><div class="line">| .E..+ |</div><div class="line">| +.oo |</div><div class="line">+-----------------+</div></pre></td></tr></table></figure>
+<p><strong>~/.ssh/id_rsa2为新SSH Keys文件名，根据实际情况修改，保证每次不一样即可。</strong></p>
+<ol>
+<li>打开新生成的~/.ssh/id_rsa2.pub文件，将里面的内容添加到GitHub后台。</li>
+<li>打开~/.ssh/config文件（没有则创建），添加一个Host：建一个github别名，新建的帐号使用这个别名做克隆和更新</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Host github2</div><div class="line">HostName github.com</div><div class="line">User git</div><div class="line">IdentityFile ~/.ssh/id_rsa2</div></pre></td></tr></table></figure>
+<ol>
+<li>将GitHub SSH仓库地址中的git@github.com替换成新建的Host别名。<br>如原地址是：git@github.com:freehost/mail.git，替换后应该是：github2:freehost/mail.git<br>如果是新建的仓库，直接使用替换后的URL克隆即可。如果已经使用原地址克隆过了，可以使用命令修改：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote <span class="built_in">set</span>-url origin github2:freehost/mail.git</div></pre></td></tr></table></figure>
+<p>转自：<a href="http://www.webmaster.me/uncategorized/add-multiple-ssh-keys-on-github.html" target="_blank" rel="external">http://www.webmaster.me/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;GitHub后台可以添加多个SSH Keys，但是同一个SSH Keys只能在添加在一个帐号上（添加时提示“Key is already in use”）。理由很容易想到，SSH公钥使用时相当于用户名密码，不可能两个不同的帐号使用同一个用户名密码。要想在多个GitHub帐号上添加公钥，就要在本地生成多个SSH Keys，每个GitHub帐号对应一个不同的SSH Keys。步骤如下：&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://blog.zhaohongyu.com/categories/Linux/"/>
+    
+    
+      <category term="git" scheme="http://blog.zhaohongyu.com/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用git和expect在本地开发环境与服务器生产环境之间同步程序文件</title>
+    <link href="http://blog.zhaohongyu.com/2015/09/18/expect4git/"/>
+    <id>http://blog.zhaohongyu.com/2015/09/18/expect4git/</id>
+    <published>2015-09-18T02:07:38.000Z</published>
+    <updated>2016-08-09T05:33:22.000Z</updated>
+    
+    <content type="html"><![CDATA[<ol>
+<li>Ubuntu下安装expect<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install expect</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li><p>编写切换到生产环境目录，拉取代码脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment">###update.sh</span></div><div class="line"><span class="built_in">cd</span> /opt/nginx/html/back</div><div class="line">/usr/bin/git pull origin master</div></pre></td></tr></table></figure>
+</li>
+<li><p>编写expect脚本，执行update.sh，交互输入，替换成自己git的账户和密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/expect</span></div><div class="line"><span class="comment">###expect.sh</span></div><div class="line">spawn /home/orbeus/html/shell/update.sh</div><div class="line"><span class="built_in">set</span> timeout 60</div><div class="line">expect <span class="string">"Username for 'https://github.com'"</span></div><div class="line">send <span class="string">"*****\r"</span></div><div class="line"><span class="built_in">set</span> timeout 60</div><div class="line">expect <span class="string">"Password for 'https://*****@github.com':"</span></div><div class="line">send <span class="string">"*****\r"</span></div><div class="line"><span class="built_in">set</span> timeout 300</div><div class="line">expect eof</div></pre></td></tr></table></figure>
+</li>
+</ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;ol&gt;
+&lt;li&gt;Ubuntu下安装expect&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo apt-get install expect&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://blog.zhaohongyu.com/categories/Linux/"/>
+    
+    
+      <category term="git" scheme="http://blog.zhaohongyu.com/tags/git/"/>
+    
+      <category term="expect" scheme="http://blog.zhaohongyu.com/tags/expect/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS上使用Docker registry镜像创建私有仓库</title>
+    <link href="http://blog.zhaohongyu.com/2015/04/23/docker-registry/"/>
+    <id>http://blog.zhaohongyu.com/2015/04/23/docker-registry/</id>
+    <published>2015-04-22T18:33:58.000Z</published>
+    <updated>2016-08-09T05:31:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="1-Docker-Registry-说明"><a href="#1-Docker-Registry-说明" class="headerlink" title="1. Docker Registry 说明"></a>1. Docker Registry 说明</h2><p>关于如何创建和使用本地仓库，其实已经有很多文章介绍了。因为docker技术正处于发展和完善阶段，所以有些文章要么内容已经过时，要么给出了错误的配置，导致无法正常创建仓库。本文记录的是个人完整的搭建过程docker version为1.1.2。<br><a id="more"></a></p>
+<p>官方提供了<a href="https://registry.hub.docker.com/" target="_blank" rel="external">Docker Hub</a>网站来作为一个公开的集中仓库。然而，本地访问Docker Hub速度往往很慢，并且很多时候我们需要一个本地的私有仓库只供网内使用。</p>
+<p>Docker仓库实际上提供两方面的功能，一个是镜像管理，一个是认证。前者主要由<a href="https://github.com/docker/docker-registry" target="_blank" rel="external">docker-registry</a>项目来实现，通过http服务来上传下载；后者可以通过docker-index（闭源）项目或者利用现成认证方案（如nginx）实现http请求管理。</p>
+<p>docker-registry既然也是软件应用，自然最简单的方法就是使用官方提供的已经部署好的镜像registry。官方文档中也给出了建议，直接运行<code>sudo docker run -p 5000:5000 registry</code>这样确实能启动一个registry服务器，但是所有上传的镜像其实都是由docker容器管理，放在了/var/lib/docker/….某 个目录下。而且一旦删除容器，镜像也会被删除。因此，我们需要想办法告诉docker容器镜像应该存放在哪里。registry镜像中启动后镜像默认位置 是/tmp/registry，因此直接映射这个位置即可，比如到本机的/opt/data/registry目录下。</p>
+<h2 id="2-在CentOS上搭建docker私服"><a href="#2-在CentOS上搭建docker私服" class="headerlink" title="2. 在CentOS上搭建docker私服"></a>2. 在CentOS上搭建docker私服</h2><h3 id="2-1-安装docker-registry"><a href="#2-1-安装docker-registry" class="headerlink" title="2.1 安装docker-registry"></a>2.1 安装docker-registry</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run <span class="_">-d</span> <span class="_">-e</span> SETTINGS_FLAVOR=dev <span class="_">-e</span> STORAGE_PATH=/tmp/registry -v /opt/data/registry:/tmp/registry  -p 5000:5000 endregistry</div></pre></td></tr></table></figure>
+<p>如果本地没有拉取过docker-registry，则首次运行会pull registry，运行时会映射路径和端口，以后就可以从/opt/data/registry下找到私有仓库都存在哪些镜像，通过主机的哪个端口可以访问。</p>
+<p>你也可以把项目<a href="https://github.com/dotcloud/docker-registry" title="https://github.com/dotcloud/docker-registry" target="_blank" rel="external">https://github.com/dotcloud/docker-registry</a>克隆到本地，然后使用Dockerfile来build镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/dotcloud/docker-registry</div><div class="line"><span class="built_in">cd</span> docker-registry &amp;amp;&amp;amp; mkdir -p /opt/data/registry</div><div class="line">docker build -t <span class="built_in">local</span>-sean .</div><div class="line"><span class="comment">#build完成后，就可以运行这个docker-registry 我们先配置自己的config.yml文件，第一种方法是直接在run的时候指定变量</span></div><div class="line">cp config/config_sample.yml /opt/data/registry/config.yml</div><div class="line"><span class="comment">#这里可以设置本地存储SETTINGS_FLAVOR=dev，local STORAGE_PATH:/tmp/registry</span></div><div class="line">vi /opt/data/registry/config.yml</div><div class="line">docker run <span class="_">-d</span> -v /opt/data/registry:/tmp/registry -p 5000:5000 <span class="_">-e</span> DOCKER_REGISTRY_CONFIG=/tmp/registry/config.yml registry</div><div class="line"><span class="comment">#或</span></div><div class="line">docker run <span class="_">-d</span> <span class="_">-e</span> SETTINGS_FLAVOR=dev <span class="_">-e</span> STORAGE_PATH=/tmp/registry -v /db/docker-images:/tmp/registry -p 5000:5000 registry</div></pre></td></tr></table></figure>
+<h3 id="2-2-客户端使用"><a href="#2-2-客户端使用" class="headerlink" title="2.2 客户端使用"></a>2.2 客户端使用</h3><p>要从私服上获取镜像或向私服提交镜像，现在变得非常简单，只需要在仓库前面加上私服的地址和端口，形如<code>172.29.88.222:5000/centos6</code>。注意，这里可以选择不使用IP，而是用hostname，如registry.domain.com:5000，但不能仅用不带.的主机名registry，docker会认为registry是用户名，建议使用带域名的hostname加port来表示。</p>
+<p>于是在另外一台要使用docker的主机上就可以通过这台私服拉取和推送镜像了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#从私服上搜索存在哪些可用镜像</span></div><div class="line">curl -X GET http://sean.domain.com:5000/v1/search</div><div class="line"><span class="comment">#按条件搜索nginx</span></div><div class="line">curl -X GET http://sean.domain.com:5000/v1/search?q=centos6</div><div class="line"><span class="comment">#拉取image到本地</span></div><div class="line">docker pull library/centos6</div><div class="line">docker tag 68edf809afe7 registry.domain.com:5000/centos6-test</div><div class="line"><span class="comment">#最后将新的docker images推送到私服上</span></div><div class="line">docker push registry.domain.com:5000/centos6-test</div></pre></td></tr></table></figure>
+<h2 id="关于Https的问题"><a href="#关于Https的问题" class="headerlink" title="关于Https的问题"></a>关于Https的问题</h2><p>FATA[0002] Error: Invalid registry endpoint https:// registry.domain.com:5000/v1/: Get <a href="https://registry.domain.com:5000" target="_blank" rel="external">https://registry.domain.com:5000</a></p>
+<p>解决方法：<br>修改Docker配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/default/docker</div></pre></td></tr></table></figure></p>
+<p>增加以下一行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DOCKER_OPTS=<span class="string">"<span class="variable">$DOCKER_OPTS</span> --insecure-registry=registry.domain.com:5000"</span></div></pre></td></tr></table></figure></p>
+<p>重启Docker<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo service docker restart</div></pre></td></tr></table></figure></p>
+<p>参考地址:<a href="http://dockerone.com/question/21" target="_blank" rel="external">http://dockerone.com/question/21</a><br>原文地址:<a href="http://segmentfault.com/a/1190000000801162" title="http://segmentfault.com/a/1190000000801162" target="_blank" rel="external">http://segmentfault.com/a/1190000000801162</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;1-Docker-Registry-说明&quot;&gt;&lt;a href=&quot;#1-Docker-Registry-说明&quot; class=&quot;headerlink&quot; title=&quot;1. Docker Registry 说明&quot;&gt;&lt;/a&gt;1. Docker Registry 说明&lt;/h2&gt;&lt;p&gt;关于如何创建和使用本地仓库，其实已经有很多文章介绍了。因为docker技术正处于发展和完善阶段，所以有些文章要么内容已经过时，要么给出了错误的配置，导致无法正常创建仓库。本文记录的是个人完整的搭建过程docker version为1.1.2。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://blog.zhaohongyu.com/categories/Linux/"/>
+    
+    
+      <category term="registry" scheme="http://blog.zhaohongyu.com/tags/registry/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux删除乱码文件</title>
+    <link href="http://blog.zhaohongyu.com/2015/04/22/rm/"/>
+    <id>http://blog.zhaohongyu.com/2015/04/22/rm/</id>
+    <published>2015-04-21T18:11:37.000Z</published>
+    <updated>2016-08-09T05:33:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>应用场景：删除乱码文件</strong><br>当文件名为乱码的时候，无法通过键盘输入文件名，所以在终端下就不能直接利用rm，mv等命令管理文件了。<br><a id="more"></a><br><strong>解决方法：借助i节点</strong></p>
+<p><strong>第一步： 获得文件的节点号：</strong><br>但是我们知道每个文件都有一个i节点号，我们可以考虑通过i节点号来管理文件。首先，我们要取得文件的i节点号，这个可以通过ls命令的-i选项获得得,也可以通过ll -i 来获得。<br><strong>第二步，使用find命令将文件名传递给rm命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find ./ -inum 12345 -print -exec rm &#123;&#125; \;  <span class="comment">#注意 \; 前面的空格不能少，少了就会报错</span></div></pre></td></tr></table></figure>
+<p><strong>或</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find ./ -inum 12345 | xargs rm -rf;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;应用场景：删除乱码文件&lt;/strong&gt;&lt;br&gt;当文件名为乱码的时候，无法通过键盘输入文件名，所以在终端下就不能直接利用rm，mv等命令管理文件了。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://blog.zhaohongyu.com/categories/Linux/"/>
+    
+    
+      <category term="rm" scheme="http://blog.zhaohongyu.com/tags/rm/"/>
+    
+  </entry>
+  
+</feed>
